@@ -5,9 +5,9 @@
     <thead class="text-xs h-8 text-white uppercase bg-gray-700">
       <th class="">Date</th>
       <th class="lg:px-10">Time</th>
-      <th>Price (Germany)</th>
-      <th>Price (Greece)</th>
-      <th>Price (France)</th>
+      <th v-if="germanFlag">Price (Germany)</th>
+      <th v-if="greekFlag">Price (Greece)</th>
+      <th v-if="frenchFlag">Price (France)</th>
     </thead>
     <tr
       v-for="(record, index) in filteredData"
@@ -18,9 +18,9 @@
         {{ record.DateTime.split("T")[0].split("-").reverse().join("-") }}
       </td>
       <td class="py-2">{{ record.DateTime.split("T")[1] }}</td>
-      <td class="py-2">{{ record.ENTSOE_DE_DAM_Price }}€</td>
-      <td class="py-2">{{ record.ENTSOE_GR_DAM_Price }}€</td>
-      <td class="py-2">{{ record.ENTSOE_FR_DAM_Price }}€</td>
+      <td v-if="germanFlag" class="py-2">{{ record.ENTSOE_DE_DAM_Price }}€</td>
+      <td v-if="greekFlag" class="py-2">{{ record.ENTSOE_GR_DAM_Price }}€</td>
+      <td v-if="frenchFlag" class="py-2">{{ record.ENTSOE_FR_DAM_Price }}€</td>
     </tr>
   </table>
 </template>
@@ -34,6 +34,15 @@ export default {
     filteredData: {
       type: Array,
       required: true,
+    },
+    germanFlag: {
+      type: Boolean,
+    },
+    greekFlag: {
+      type: Boolean,
+    },
+    frenchFlag: {
+      type: Boolean,
     },
   },
   data() {

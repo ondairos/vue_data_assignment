@@ -17,6 +17,7 @@
             class="cursor-pointer"
             @change="handleStartDate"
           />
+          <span class="lg:hidden mx-2"> - </span>
           <label for="enddate" class="hidden lg:block text-sm underline lg:mt-4"
             >Pick an end date:</label
           >
@@ -31,10 +32,10 @@
         </div>
         <button
           type="button"
-          class="text-white bg-[#24292F] mt-4 hover:bg-[#24292F]/90 font-medium rounded-lg text-sm w-32 py-2.5 text-center items-center me-2 mb-2"
-          @click="changeBackground"
+          class="text-white bg-[#24292F] mt-4 hover:bg-[#24292F]/90 font-medium rounded-lg text-sm w-32 py-2.5 text-center items-center me-2 mb-4"
+          @click="clearRanges"
         >
-          Search
+          Clear Dates
         </button>
         <div
           class="flex flex-row justify-between items-center lg:flex-col lg:mt-10"
@@ -43,16 +44,37 @@
             Displayed Countries
           </p>
           <div class="text-center">
-            <label for="greeceCheckbox" class="mr-1">Germany</label>
-            <input type="checkbox" name="greeceCheckbox" class="mr-3" />
+            <label for="germanCheckbox" class="mr-1">Germany</label>
+            <input
+              v-model="germanFlag"
+              type="checkbox"
+              name="germanCheckbox"
+              class="mr-3"
+              checked
+              @change="() => handleCountryToggle('germany')"
+            />
           </div>
           <div class="text-center">
             <label for="greeceCheckbox" class="mr-1">Greece</label>
-            <input type="checkbox" name="greeceCheckbox" class="mr-3" />
+            <input
+              v-model="greekFlag"
+              type="checkbox"
+              name="greeceCheckbox"
+              class="mr-3"
+              checked
+              @change="() => handleCountryToggle('greece')"
+            />
           </div>
           <div class="text-center">
-            <label for="greeceCheckbox" class="mr-1">France</label>
-            <input type="checkbox" name="greeceCheckbox" class="mr-3" />
+            <label for="frenchCheckbox" class="mr-1">France</label>
+            <input
+              v-model="frenchFlag"
+              type="checkbox"
+              name="frenchCheckbox"
+              class="mr-3"
+              checked
+              @change="() => handleCountryToggle('france')"
+            />
           </div>
         </div>
       </section>
@@ -63,7 +85,6 @@
     </section>
     <section v-else class="flex flex-col w-full h-full bg-slate-200 lg:pt-0">
       <section class="flex flex-col w-full py-4 lg:h-1/2 items-center">
-        <!-- send array for line chart -->
         <h1 class="text-center mb-1 lg:text-2xl">Energy Price to Date</h1>
         <Line
           :data="chartData"
@@ -73,7 +94,12 @@
       </section>
       <section class="overflow-y-auto lg:mt-10 h-custom">
         <h1 class="text-center lg:text-2xl mb-1">Energy Prices</h1>
-        <DataTable :filteredData="sliced_data" />
+        <DataTable
+          :filteredData="sliced_data"
+          :germanFlag="germanFlag"
+          :greekFlag="greekFlag"
+          :frenchFlag="frenchFlag"
+        />
       </section>
     </section>
   </main>
@@ -123,6 +149,9 @@ export default {
       allDates: [],
       startDate: null,
       endDate: null,
+      greekFlag: true,
+      frenchFlag: true,
+      germanFlag: true,
       chartOptions: {
         responsive: true,
         maintainAspectRatio: true,
@@ -161,24 +190,52 @@ export default {
       this.germanPrices.push(record.ENTSOE_DE_DAM_Price);
       this.allDates.push(record.DateTime.split("T")[0]);
     });
-    // console.log(this.greekPrices);
-    // console.log("dates: ", this.allDates);
   },
-  watch: {
-    startDate(newValue, oldValue) {
-      console.log("Start date changed to ", newValue);
-    },
-    endDate(newValue, oldValue) {},
-  },
+  // watch: {
+  //   startDate(newValue, oldValue) {
+  //     console.log("Start date changed to ", newValue);
+  //   },
+  //   endDate(newValue, oldValue) {},
+  // },
   methods: {
-    changeBackground() {
-      // console.log("clicked");
-      this.sliced_data = this.all_data.slice(0, 10);
+    clearRanges() {
+      this.sliced_data = timeseries;
+      this.allDates = [];
+      this.sliced_data.forEach((record) => {
+        this.allDates.push(record.DateTime.split("T")[0]);
+      });
+      this.startDate = null;
+      this.endDate = null;
     },
-    handleStartDate(event) {
-      console.log("Selected start date ", this.startDate);
+    handleStartDate() {
+      if (this.startDate && this.allDates.includes(this.startDate)) {
+        this.sliced_data = this.sliced_data.filter((record) => {
+          return record.DateTime.split("T")[0] >= this.startDate;
+        });
+        this.allDates = this.allDates.filter((record) => {
+          return record >= this.startDate;
+        });
+      } else {
+        alert("No record found at this start date!");
+        this.startDate = null;
+      }
     },
-    handleEndDate(event) {},
+    handleEndDate() {
+      if (this.endDate && this.allDates.includes(this.endDate)) {
+        this.sliced_data = this.sliced_data.filter((record) => {
+          return record.DateTime.split("T")[0] <= this.endDate;
+        });
+        this.allDates = this.allDates.filter((record) => {
+          return record <= this.endDate;
+        });
+      } else {
+        alert("No record found at this end date!");
+        this.endDate = null;
+      }
+    },
+    handleCountryToggle(country) {
+      this[`${country}Flag`] = !this[`${country}Flag`];
+    },
   },
 };
 </script>
