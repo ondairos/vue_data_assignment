@@ -12,9 +12,7 @@
         class="flex flex-col w-full justify-between items-center lg:flex-col border-b-2 border-gray"
       >
         <div class="text-center">
-          <h1 class="lg:mb-2 text-lg hidden underline lg:block">
-            Select a date range:
-          </h1>
+          <h1 class="lg:mb-2 text-lg underline">Select a date range:</h1>
           <label for="startdate" class="hidden lg:block text-sm"
             >start date:</label
           >
