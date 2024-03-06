@@ -22,12 +22,12 @@ This documentation outlines the core functions of the Energy Data Assignment app
 - **Functionality**:
   - Parses the provided JSON file containing timeseries datasets.
   - Renders the data in a table format with columns for date, time, and prices for each country (Germany, Greece, France).
-- **Props**:
+- **Configuration**:
   - filteredData: Array of objects representing timeseries data for each country.
   - greekFlag, frenchFlag, germanFlag: Boolean values representing Toggling state for each country.
 - **Computed Properties**:
   - formattedData: Returns the filtered data with formatted date and time columns.
-  - Data is being received as: 2024-02-01T00:00:00 by formatting the data to: 2024-02-01 00:00:00 we have a visibly appealing and more understood display for the user.
+  - Data is being received as: 2024-02-01T00:00:00 by formatting the data to: 01-02-2024 00:00:00 we have a visibly appealing and more understood display for the user.
 - **Data Source**: [timeseries.json](data/timeseries.json)
 
 ### Line Chart
