@@ -131,7 +131,9 @@ export default {
       this.greekPrices.push(record.ENTSOE_GR_DAM_Price);
       this.frenchPrices.push(record.ENTSOE_FR_DAM_Price);
       this.germanPrices.push(record.ENTSOE_DE_DAM_Price);
-      this.allDates.push(record.DateTime.split("T")[0]);
+      this.allDates.push(
+        record.DateTime.split("T")[0].split("-").reverse().join("-")
+      );
     });
   },
   methods: {
