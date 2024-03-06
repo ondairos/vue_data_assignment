@@ -8,6 +8,7 @@
     />
   </section>
 </template>
+
 <script>
 import {
   Chart as ChartJS,

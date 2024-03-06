@@ -15,10 +15,10 @@ To run the project, you will need to install the following dependencies by execu
 
 ### Tools
 
-- [Vue.js](https://vuejs.org/)
-- [Chart.js](https://www.chartjs.org)
-- [Vite](https://vitejs.dev)
-- [TailwindCSS](https://tailwindcss.com)
+- [Vue.js](https://vuejs.org/) JavaScript framework.
+- [Chart.js](https://www.chartjs.org) JavaScript charting library.
+- [Vite](https://vitejs.dev) Build tool that provides fast development server and optimized builds.
+- [TailwindCSS](https://tailwindcss.com) CSS framework that provides pre-built components and utility classes.
 
 ### Data Representation
 

@@ -5,18 +5,17 @@ This documentation outlines the core functions of the Energy Data Assignment app
 ### MainPage.vue
 
 - **Functionality**:
-  - Provides input fields to select start and end dates.
-  - Filters the table and chart data based on the selected date range.
-  - Provides checkboxes for each country to show/hide its corresponding data.
-  - Updates the table and chart dynamically based on the selected checkboxes.
-  - Provides a button to clear the selected dates.
+  - Acts as the main container for displaying the energy data visualization and controls.
+  - Data Management: Handles the loading and processing of timeseries data from the provided JSON file.
+  - Visualization Integration: Integrates the ChartSection and DataTable components to display the energy price trends visually and in tabular format, respectively.
+  - Loading State: Displays a spinner while data is being loaded or processed.
 - **Configuration**:
   - The component is mounted with the data from the JSON file.
   - clearRanges method is used to set the array that we are displaying the table and chart to an empty array. Also sets the start and end dates to null.
   - handleStartDate() and handleEndDate() methods are used to set the start and end dates based on the user input. They are using .filter method to filter the data and server them to the table and chart respectively.
   - handleCountryToggle(country): Toggles the visibility of the corresponding country's data in the table and chart. By receiving the country name, the parent component will update the app with the correct country data and visibility state.
   - created(): We are initializing the app by setting the sliced_data array to the original data received from the backend/local file. We then iterate over the data and push each record in the corresponding country's price array(chart configuration) and finally storing all the dates in the allDates array for the chart.
-- **Components**: DataTable.vue, Line Chart, NavBar.vue, Spinner.vue
+- **Components**: DataTable.vue, ChartSection.vue, NavBar.vue, Spinner.vue
 
 ### DataTable.vue
 
@@ -39,12 +38,16 @@ This documentation outlines the core functions of the Energy Data Assignment app
   - Represents each country's prices over time as separate lines on the chart.
 - **Configuration**:
 
-  - Data is being received as: 2024-02-01T00:00:00 by formatting the data to: 2024-02-01 00:00:00
   - We are passing two props that configure the chart: data and options.
   - data: Is a computed property named chartData that returns a labels and datasets array for the chart. With the use of conditionals to display the correct data for each country based on the toggling state and date range from the NavBar component.
-  - options: Configuration object needed by the Chart.js library to generate the chart. Here we are using the responsive option to make the chart responsive to the window size and the maintainAspectRatio option to maintain the aspect ratio of the chart.
+  - options:
+    Configuration object needed by the Chart.js library to generate the chart.
+    - Here we are using the responsive option to make the chart responsive to the window size.
+    - maintainAspectRatio option to maintain the aspect ratio of the chart.
+    - scales option to set the y-axis scale to format the prices with the euro currency.
+    - plugins option to customize our tooltips of the chart by adding a label to every dot on the chart that will display the current price in euros.
 
-- **Components**: MainPage.vue (utilizes Vue Chart.js)
+- **Components**: MainPage.vue
 
 ### NavBar.vue
 
