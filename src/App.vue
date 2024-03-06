@@ -28,7 +28,7 @@
       <section class="overflow-y-auto lg:mt-10 h-custom">
         <h1 class="text-center lg:text-2xl mb-1">Energy Prices</h1>
         <DataTable
-          :filteredData="sliced_data"
+          :filteredData="all_data"
           :germanFlag="germanFlag"
           :greekFlag="greekFlag"
           :frenchFlag="frenchFlag"
@@ -41,7 +41,7 @@
 <script>
 import "./App.css";
 import DataTable from "./components/DataTable.vue";
-import Spinner from "./components/Spinner.vue";
+import Spinner from "./components/shared/Spinner.vue";
 import NavBar from "./components/NavBar.vue";
 import ChartSection from "./components/ChartSection.vue";
 import timeseries from "../data/timeseries.json";
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       loading: false,
-      sliced_data: [],
+      all_data: [],
       greekPrices: [],
       frenchPrices: [],
       germanPrices: [],
@@ -70,8 +70,8 @@ export default {
     };
   },
   created() {
-    this.sliced_data = timeseries;
-    this.sliced_data.forEach((record) => {
+    this.all_data = timeseries;
+    this.all_data.forEach((record) => {
       this.greekPrices.push(record.ENTSOE_GR_DAM_Price);
       this.frenchPrices.push(record.ENTSOE_FR_DAM_Price);
       this.germanPrices.push(record.ENTSOE_DE_DAM_Price);
@@ -80,9 +80,9 @@ export default {
   },
   methods: {
     clearRanges() {
-      this.sliced_data = timeseries;
+      this.all_data = timeseries;
       this.allDates = [];
-      this.sliced_data.forEach((record) => {
+      this.all_data.forEach((record) => {
         this.allDates.push(record.DateTime.split("T")[0]);
       });
       this.startDate = null;
@@ -91,7 +91,7 @@ export default {
     handleStartDate(startDate) {
       this.startDate = startDate;
       if (this.startDate && this.allDates.includes(this.startDate)) {
-        this.sliced_data = this.sliced_data.filter((record) => {
+        this.all_data = this.all_data.filter((record) => {
           return record.DateTime.split("T")[0] >= this.startDate;
         });
         this.allDates = this.allDates.filter((record) => {
@@ -105,7 +105,7 @@ export default {
     handleEndDate(endDate) {
       this.endDate = endDate;
       if (this.endDate && this.allDates.includes(this.endDate)) {
-        this.sliced_data = this.sliced_data.filter((record) => {
+        this.all_data = this.all_data.filter((record) => {
           return record.DateTime.split("T")[0] <= this.endDate;
         });
         this.allDates = this.allDates.filter((record) => {
