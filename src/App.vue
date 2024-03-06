@@ -42,7 +42,7 @@
 import "./App.css";
 import DataTable from "./components/DataTable.vue";
 import Spinner from "./components/shared/Spinner.vue";
-import NavBar from "./components/NavBar.vue";
+import NavBar from "./components/shared/NavBar.vue";
 import ChartSection from "./components/ChartSection.vue";
 import timeseries from "../data/timeseries.json";
 

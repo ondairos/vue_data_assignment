@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import CountryCheckbox from "./shared/CountryCheckbox.vue";
+import CountryCheckbox from "./CountryCheckbox.vue";
 
 export default {
   name: "NavBar",
