@@ -2,7 +2,9 @@
   <table
     class="w-full lg:w-5/6 h-full text-center mx-auto text-xs lg:text-base border border-slate-200 bg-white"
   >
-    <thead class="text-xs h-8 text-white uppercase bg-gray-700">
+    <thead
+      class="text-xs h-8 text-white uppercase bg-gray-700 sticky top-0 z-10"
+    >
       <th class="">Date</th>
       <th class="lg:px-10">Time</th>
       <th v-if="germanFlag">Price (Germany)</th>

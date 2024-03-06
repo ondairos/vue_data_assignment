@@ -1,90 +1,22 @@
 <template>
   <main class="flex flex-col lg:flex-row lg:h-screen">
-    <nav
-      class="lg:flex lg:flex-col lg:max-w-fit w-full lg:w-40 p-4 items-center"
-    >
-      <h1 class="mb-2 lg:mb-8 text-center font-bold text-3xl">Energy</h1>
-      <section class="flex flex-col h-fit justify-between items-center">
-        <div class="flex flex-row justify-between lg:flex-col">
-          <label for="startdate" class="hidden lg:block text-sm underline"
-            >Pick a start date:</label
-          >
-          <input
-            v-model="startDate"
-            type="date"
-            id="startdate"
-            name="startdate"
-            class="cursor-pointer"
-            @change="handleStartDate"
-          />
-          <span class="lg:hidden mx-2"> - </span>
-          <label for="enddate" class="hidden lg:block text-sm underline lg:mt-4"
-            >Pick an end date:</label
-          >
-          <input
-            v-model="endDate"
-            type="date"
-            id="enddate"
-            name="enddate"
-            class="cursor-pointer"
-            @change="handleEndDate"
-          />
-        </div>
-        <button
-          type="button"
-          class="text-white bg-[#24292F] mt-4 hover:bg-[#24292F]/90 font-medium rounded-lg text-sm w-32 py-2.5 text-center items-center me-2 mb-4"
-          @click="clearRanges"
-        >
-          Clear Dates
-        </button>
-        <div
-          class="flex flex-row justify-between items-center lg:flex-col lg:mt-10"
-        >
-          <p class="text-center lg:mb-2 text-sm hidden underline lg:block">
-            Displayed Countries
-          </p>
-          <div class="text-center">
-            <label for="germanCheckbox" class="mr-1">Germany</label>
-            <input
-              v-model="germanFlag"
-              type="checkbox"
-              name="germanCheckbox"
-              class="mr-3"
-              checked
-              @change="() => handleCountryToggle('germany')"
-            />
-          </div>
-          <div class="text-center">
-            <label for="greeceCheckbox" class="mr-1">Greece</label>
-            <input
-              v-model="greekFlag"
-              type="checkbox"
-              name="greeceCheckbox"
-              class="mr-3"
-              checked
-              @change="() => handleCountryToggle('greece')"
-            />
-          </div>
-          <div class="text-center">
-            <label for="frenchCheckbox" class="mr-1">France</label>
-            <input
-              v-model="frenchFlag"
-              type="checkbox"
-              name="frenchCheckbox"
-              class="mr-3"
-              checked
-              @change="() => handleCountryToggle('france')"
-            />
-          </div>
-        </div>
-      </section>
-    </nav>
+    <NavBar
+      :startDate="startDate"
+      :endDate="endDate"
+      :germanFlag="germanFlag"
+      :frenchFlag="frenchFlag"
+      :greekFlag="greekFlag"
+      @handleStartDate="handleStartDate"
+      @handleEndDate="handleEndDate"
+      @clearRanges="clearRanges"
+      @handleCountryToggle="handleCountryToggle"
+    />
 
     <section v-if="loading" class="w-full h-full">
       <Spinner />
     </section>
     <section v-else class="flex flex-col w-full h-full bg-slate-200 lg:pt-0">
-      <section class="flex flex-col w-full py-4 lg:h-1/2 items-center">
+      <section class="flex flex-col w-full py-4 px-2 lg:h-1/2 items-center">
         <h1 class="text-center mb-1 lg:text-2xl">Energy Price to Date</h1>
         <Line
           :data="chartData"
@@ -109,6 +41,7 @@
 import "./App.css";
 import DataTable from "./components/DataTable.vue";
 import Spinner from "./components/Spinner.vue";
+import NavBar from "./components/NavBar.vue";
 import timeseries from "../data/timeseries.json";
 import {
   Chart as ChartJS,
@@ -138,6 +71,7 @@ export default {
     DataTable,
     Line,
     Spinner,
+    NavBar,
   },
   data() {
     return {
@@ -160,25 +94,31 @@ export default {
   },
   computed: {
     chartData() {
+      const datasets = [];
+      if (this.germanFlag) {
+        datasets.push({
+          label: "Germany",
+          backgroundColor: "yellow",
+          data: this.germanPrices,
+        });
+      }
+      if (this.greekFlag) {
+        datasets.push({
+          label: "Greece",
+          backgroundColor: "blue",
+          data: this.greekPrices,
+        });
+      }
+      if (this.frenchFlag) {
+        datasets.push({
+          label: "France",
+          backgroundColor: "red",
+          data: this.frenchPrices,
+        });
+      }
       return {
         labels: this.allDates,
-        datasets: [
-          {
-            label: "Greece",
-            backgroundColor: "#0000FF",
-            data: this.greekPrices,
-          },
-          {
-            label: "France",
-            backgroundColor: "red",
-            data: this.frenchPrices,
-          },
-          {
-            label: "Germany",
-            backgroundColor: "yellow",
-            data: this.germanPrices,
-          },
-        ],
+        datasets: datasets.filter((dataset) => dataset.data.length > 0),
       };
     },
   },
@@ -191,12 +131,6 @@ export default {
       this.allDates.push(record.DateTime.split("T")[0]);
     });
   },
-  // watch: {
-  //   startDate(newValue, oldValue) {
-  //     console.log("Start date changed to ", newValue);
-  //   },
-  //   endDate(newValue, oldValue) {},
-  // },
   methods: {
     clearRanges() {
       this.sliced_data = timeseries;
@@ -207,7 +141,8 @@ export default {
       this.startDate = null;
       this.endDate = null;
     },
-    handleStartDate() {
+    handleStartDate(startDate) {
+      this.startDate = startDate;
       if (this.startDate && this.allDates.includes(this.startDate)) {
         this.sliced_data = this.sliced_data.filter((record) => {
           return record.DateTime.split("T")[0] >= this.startDate;
@@ -220,7 +155,8 @@ export default {
         this.startDate = null;
       }
     },
-    handleEndDate() {
+    handleEndDate(endDate) {
+      this.endDate = endDate;
       if (this.endDate && this.allDates.includes(this.endDate)) {
         this.sliced_data = this.sliced_data.filter((record) => {
           return record.DateTime.split("T")[0] <= this.endDate;
@@ -234,7 +170,13 @@ export default {
       }
     },
     handleCountryToggle(country) {
-      this[`${country}Flag`] = !this[`${country}Flag`];
+      if (country === "Germany") {
+        this.germanFlag = !this.germanFlag;
+      } else if (country === "Greece") {
+        this.greekFlag = !this.greekFlag;
+      } else if (country === "France") {
+        this.frenchFlag = !this.frenchFlag;
+      }
     },
   },
 };

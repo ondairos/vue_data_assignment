@@ -1,6 +1,6 @@
 <template>
-  <div className="spinnerContainer">
-    <div className="loadingSpinner"></div>
+  <div className="flex justify-center items-center h-screen">
+    <div className="loadingSpinner w-12 h-12 rounded-full"></div>
   </div>
 </template>
 <script>
@@ -17,19 +17,10 @@ export default {
     transform: rotate(360deg);
   }
 }
-.spinnerContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
 
 .loadingSpinner {
-  width: 50px;
-  height: 50px;
   border: 10px solid #f3f3f3;
   border-top: 10px solid #383636;
-  border-radius: 50%;
   animation: spinner 1.5s linear infinite;
 }
 </style>
