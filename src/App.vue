@@ -16,14 +16,15 @@
       <Spinner />
     </section>
     <section v-else class="flex flex-col w-full h-full bg-slate-200 lg:pt-0">
-      <section class="flex flex-col w-full py-4 px-2 lg:h-1/2 items-center">
-        <h1 class="text-center mb-1 lg:text-2xl">Energy Price to Date</h1>
-        <Line
-          :data="chartData"
-          :options="chartOptions"
-          class="shadow-lg border border-slate-200 bg-white rounded-lg"
-        />
-      </section>
+      <ChartSection
+        :germanFlag="germanFlag"
+        :greekFlag="greekFlag"
+        :frenchFlag="frenchFlag"
+        :germanPrices="germanPrices"
+        :greekPrices="greekPrices"
+        :frenchPrices="frenchPrices"
+        :allDates="allDates"
+      />
       <section class="overflow-y-auto lg:mt-10 h-custom">
         <h1 class="text-center lg:text-2xl mb-1">Energy Prices</h1>
         <DataTable
@@ -42,36 +43,16 @@ import "./App.css";
 import DataTable from "./components/DataTable.vue";
 import Spinner from "./components/Spinner.vue";
 import NavBar from "./components/NavBar.vue";
+import ChartSection from "./components/ChartSection.vue";
 import timeseries from "../data/timeseries.json";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "vue-chartjs";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 export default {
   name: "MainPage",
   components: {
     DataTable,
-    Line,
     Spinner,
     NavBar,
+    ChartSection,
   },
   data() {
     return {
@@ -86,44 +67,7 @@ export default {
       greekFlag: true,
       frenchFlag: true,
       germanFlag: true,
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: true,
-      },
     };
-  },
-  computed: {
-    chartData() {
-      const datasets = [];
-      if (this.germanFlag) {
-        datasets.push({
-          label: "Germany",
-          backgroundColor: "orange",
-          borderColor: "rgba(255, 165, 0, .7)",
-          data: this.germanPrices,
-        });
-      }
-      if (this.greekFlag) {
-        datasets.push({
-          label: "Greece",
-          backgroundColor: "blue",
-          borderColor: "rgba(0, 0, 255, .7)",
-          data: this.greekPrices,
-        });
-      }
-      if (this.frenchFlag) {
-        datasets.push({
-          label: "France",
-          backgroundColor: "red",
-          borderColor: "rgba(255, 0, 0, .7)",
-          data: this.frenchPrices,
-        });
-      }
-      return {
-        labels: this.allDates,
-        datasets: datasets.filter((dataset) => dataset.data.length > 0),
-      };
-    },
   },
   created() {
     this.sliced_data = timeseries;
