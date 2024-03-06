@@ -1,13 +1,17 @@
 # Energy Data Assignment
 
-This project showcases the use of Vue.js to create a data visualization application that allows users to view energy prices data for three countries in a table and chart format.
+This project showcases the use of Vue.js to create a data visualization application that allows users to view and filter energy price data for three countries in a table and chart format.
 
 ### Dependencies
 
-To run the project, you will need to install the following dependencies and execute the following commands:
+To run the project, you will need to install the following dependencies by executing the following commands:
 
 - npm install
 - npm run dev
+
+### Deployed Application
+
+- [https://vue-data-assignment.netlify.app/](https://vue-data-assignment.netlify.app/)
 
 ### Tools
 
@@ -19,8 +23,6 @@ To run the project, you will need to install the following dependencies and exec
 ### Data Representation
 
 - A JSON file containing three timeseries datasets with timestamps and values is provided.
-- The data is represented in a table to display the timeseries values for each country.
-- The data is visualized using a line chart to help users understand trends over time, utilizing the Chart.js library.
 
 ## Features
 
@@ -68,4 +70,4 @@ To run the project, you will need to install the following dependencies and exec
 }
 ```
 
-# Created by: [Ioannis Kantiloros](https://github.com/ondairos)
+## Created by: [Ioannis Kantiloros](https://github.com/ondairos)

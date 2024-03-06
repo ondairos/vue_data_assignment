@@ -21,7 +21,7 @@
         <Line
           :data="chartData"
           :options="chartOptions"
-          class="shadow-lg border border-slate-200 bg-white rounded-xl"
+          class="shadow-lg border border-slate-200 bg-white rounded-lg"
         />
       </section>
       <section class="overflow-y-auto lg:mt-10 h-custom">
@@ -98,7 +98,8 @@ export default {
       if (this.germanFlag) {
         datasets.push({
           label: "Germany",
-          backgroundColor: "yellow",
+          backgroundColor: "orange",
+          borderColor: "rgba(255, 165, 0, .7)",
           data: this.germanPrices,
         });
       }
@@ -106,6 +107,7 @@ export default {
         datasets.push({
           label: "Greece",
           backgroundColor: "blue",
+          borderColor: "rgba(0, 0, 255, .7)",
           data: this.greekPrices,
         });
       }
@@ -113,6 +115,7 @@ export default {
         datasets.push({
           label: "France",
           backgroundColor: "red",
+          borderColor: "rgba(255, 0, 0, .7)",
           data: this.frenchPrices,
         });
       }
