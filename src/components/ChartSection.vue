@@ -101,6 +101,7 @@ export default {
   computed: {
     chartData() {
       const datasets = [];
+
       if (this.germanFlag) {
         datasets.push({
           label: "Germany",

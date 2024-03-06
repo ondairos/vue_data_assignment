@@ -134,7 +134,6 @@ export default {
       this.$emit("clearRanges");
     },
     emitCountryToggle(country) {
-      console.log("countr here", country);
       this.$emit("handleCountryToggle", country);
     },
   },
