@@ -61,7 +61,7 @@ This documentation outlines the core functions of the Energy Data Assignment app
   - Date configuration: Two input elements for selecting start and end dates. By changing the date in one input there is an event emitted to the parent component that will update the start or end date accordingly. Which in turn will update the app with the correct range of dates we want to display.
   - Country configuration: Three checkboxes for each country. These checkboxes allow users to toggle visibility of the corresponding data in the table and chart. By emitting an event with the country name and the visibility state, the parent component will update the app with the correct country data and visibility state.
   - Clear Dates configuration: A button that will clear the selected start and end dates by emitting an event that will trigger the parent component to clear the dates.
-  - CountryCheckbox: shared Component that receives a flag and country name and emits an event with the country name and the visibility state. Can be resuable in other components.
+  - CountryCheckbox: shared Component that receives a flag and country name and emits an event with the country name for toggling the visibility of the corresponding country. Can be resuable in other components.
 - **Components**: NavBar.vue, CountryCheckbox.vue
 
 ### Spinner.vue
