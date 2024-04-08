@@ -1,4 +1,4 @@
-# Energy Data Assignment
+# Energy Data
 
 This project showcases the use of Vue.js to create a data visualization application that allows users to view and filter energy price data for three countries in a table and chart format.
 
